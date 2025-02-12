@@ -14,7 +14,7 @@
     "cypress:open": "cypress open",
     "prepare": "husky",
     "commitlint": "commitlint --edit",
-    "sync": "next build && aws s3 sync ./out  s3://merc.rivailjunior.com/",
+    "sync": "aws s3 sync ./out  s3://merc.rivailjunior.com/",
     "invalidate": "aws cloudfront create-invalidation --distribution-id E3G3L9VOJDAP1R --paths '/*' && exit"
   },
   "dependencies": {
