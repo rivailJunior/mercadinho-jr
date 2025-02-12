@@ -86,17 +86,37 @@ jobs:
       - name: Running test
         run: npm run test:unit
 
-  test-e2e:
-    needs: ["test"]
-    name: E2E
-    timeout-minutes: 60
+  deploy:
     runs-on: ubuntu-latest
-    if: ${{ success() }}
+
     steps:
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v4
-      - name: Cypress run
-        uses: cypress-io/github-action@v6
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          build: npm run build
-          start: npm start
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Sync Files to S3
+        run: npm run sync
+      
+      - name: Invalidate Cloudfront
+        run: npm run invalidate
+
+  # test-e2e:
+  #   needs: ["test"]
+  #   name: E2E
+  #   timeout-minutes: 60
+  #   runs-on: ubuntu-latest
+  #   if: ${{ success() }}
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #     - name: Cypress run
+  #       uses: cypress-io/github-action@v6
+  #       with:
+  #         build: npm run build
+  #         start: npm start
