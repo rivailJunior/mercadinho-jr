@@ -105,7 +105,7 @@ jobs:
         uses: bahmutov/npm-install@v1
         with:
           useLockFile: false
-          
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -113,6 +113,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
+      - name: Build
+        run: npm run build
 
       - name: Sync Files to S3
         run: npm run sync
