@@ -1,18 +1,18 @@
-import { render, screen } from "@testing-library/react";
-import { Heading } from "@/components";
+import { Heading } from '@/components/heading';
+import { render, screen } from '@testing-library/react';
 
-jest.mock("../../config/env", () => ({
+jest.mock('../../config/env', () => ({
   env: {
-    WELCOME_MESSAGE: "We are here to help you with your Next.js project 🥳",
+    WELCOME_MESSAGE: 'We are here to help you with your Next.js project 🥳',
   },
 }));
 
-describe("Heading Component", () => {
-  test("should render Heading Component properly", () => {
+describe('Heading Component', () => {
+  test('should render Heading Component properly', () => {
     render(<Heading />);
 
     expect(
-      screen.getByText(/Hey, let’s build something together?/i)
+      screen.getByText(/Hey, let’s build something for your store?/i)
     ).toBeInTheDocument();
 
     expect(

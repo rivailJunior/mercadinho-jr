@@ -1,11 +1,4 @@
-import { Heading } from "@/components";
-import { ModeToggle } from '@/components/mode-toggle';
-
+import { Heading } from '@/components';
 export default function Home() {
-  return (
-    <main className='flex min-h-screen items-center align-middle justify-center'>
-      <ModeToggle />
-      <Heading />
-    </main>
-  );
+  return <Heading />;
 }
