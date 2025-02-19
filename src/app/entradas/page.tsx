@@ -14,19 +14,23 @@ import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { handleFormatForBRL } from '@/lib';
 
 const entryFormSchema = z.object({
-  machine: z.number().min(1).max(99999),
-  money: z.number().min(1).max(999999),
+  machine: z
+    .string({
+      required_error: 'Required',
+    })
+    .min(1),
+  money: z
+    .string({
+      required_error: 'Required',
+    })
+    .min(1),
 });
-
 const EntryFrom = () => {
   const form = useForm<z.infer<typeof entryFormSchema>>({
     resolver: zodResolver(entryFormSchema),
-    defaultValues: {
-      machine: 0,
-      money: 0,
-    },
   });
 
   function onSubmit(values: z.infer<typeof entryFormSchema>) {
@@ -35,17 +39,31 @@ const EntryFrom = () => {
     console.log(values);
   }
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const fieldName = event.target.name;
+    const rawValue = event.target.value.replace(/\D/g, ''); // Remove all non-numeric characters
+    const numericValue = rawValue ? Number(rawValue) / 100 : 0; // Convert to a decimal number
+    form.setValue(fieldName as any, handleFormatForBRL(numericValue).format(), {
+      shouldValidate: true,
+    });
+  };
+
   return (
     <Form {...form}>
       <form className='space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
           name='machine'
-          render={({ field }) => (
+          render={() => (
             <FormItem>
               <FormLabel>Maquininha</FormLabel>
               <FormControl>
-                <Input placeholder='shadcn' {...field} type='money' />
+                <Input
+                  placeholder='R$100,00'
+                  value={form.watch('machine')}
+                  {...form.register('machine')}
+                  onChange={handleChange}
+                />
               </FormControl>
               <FormDescription>Vendas na maquininha</FormDescription>
               <FormMessage />
@@ -56,11 +74,16 @@ const EntryFrom = () => {
         <FormField
           control={form.control}
           name='money'
-          render={({ field }) => (
+          render={() => (
             <FormItem>
               <FormLabel>Dinheiro</FormLabel>
               <FormControl>
-                <Input placeholder='shadcn' {...field} />
+                <Input
+                  placeholder='R$200,00'
+                  value={form.watch('money')}
+                  {...form.register('money')}
+                  onChange={handleChange}
+                />
               </FormControl>
               <FormDescription>Vendas no dinheiro</FormDescription>
               <FormMessage />

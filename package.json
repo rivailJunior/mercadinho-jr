@@ -18,12 +18,15 @@
     "invalidate": "aws cloudfront create-invalidation --distribution-id E3G3L9VOJDAP1R --paths '/*' && exit"
   },
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.751.0",
+    "@aws-sdk/lib-dynamodb": "^3.751.0",
     "@hookform/resolvers": "^4.1.0",
     "@radix-ui/react-dropdown-menu": "^2.1.6",
     "@radix-ui/react-label": "^2.1.2",
     "@radix-ui/react-slot": "^1.1.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "currency.js": "^2.0.4",
     "lucide-react": "^0.475.0",
     "next": "14.0.4",
     "next-themes": "^0.4.4",
