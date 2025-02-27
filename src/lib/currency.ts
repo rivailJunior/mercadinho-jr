@@ -7,3 +7,7 @@ export const handleFormatForBRL = (value: number | string) =>
     decimal: ',',
     precision: 2,
   });
+
+export const handleTransformToNumber = (value: string) => {
+  return Number(value.replace(/[\D]+/g, '')) / 100;
+};

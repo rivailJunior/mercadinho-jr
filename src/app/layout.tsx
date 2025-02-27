@@ -4,6 +4,7 @@ import './globals.css';
 import { ThemeProvider } from '@/providers/theme-provider';
 import Header from '@/components/ui/header';
 import { MenuItems } from '@/constants/menu-items';
+import { Toaster } from '@/components/ui/sonner';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -27,6 +28,7 @@ export default function RootLayout({
           <Header menuItems={MenuItems} />
           <main className='container mx-auto p-10'>{children}</main>
         </body>
+        <Toaster />
       </ThemeProvider>
     </html>
   );
