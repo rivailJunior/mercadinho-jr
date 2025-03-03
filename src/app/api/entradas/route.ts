@@ -18,10 +18,8 @@ export async function POST(request: Request) {
 
 export async function DELETE(request: Request) {
   const json = await request.json();
-  console.log('json:', json);
 
   const deleteResponse = await dynamoClient.deleteOne(json.id, json.date);
-  console.log('deleteResponse:===>', deleteResponse);
   if (deleteResponse.$metadata.httpStatusCode !== 200) {
     return Response.json({
       message: 'Error deleting',

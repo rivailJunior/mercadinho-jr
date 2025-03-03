@@ -27,6 +27,7 @@ import { CalendarIcon } from 'lucide-react';
 import { EntriesService } from '@/services';
 import { EntrySchema } from '@/schemas';
 import { useRouter } from 'next/navigation';
+import { AlertDialogCancel } from '@/components/ui/alert-dialog';
 
 export const EntryFrom = () => {
   const router = useRouter();
@@ -36,8 +37,8 @@ export const EntryFrom = () => {
 
   const clearForm = () => {
     form.reset({
-      machine: '',
-      money: '',
+      machine: 0,
+      money: 0,
       date: '',
     });
   };
@@ -137,7 +138,7 @@ export const EntryFrom = () => {
                 <PopoverContent className='w-auto p-0' align='start'>
                   <Calendar
                     mode='single'
-                    selected={field.value}
+                    selected={new Date(field.value)}
                     onSelect={field.onChange}
                     disabled={(date) =>
                       date > new Date() || date < new Date('1900-01-01')
@@ -151,7 +152,14 @@ export const EntryFrom = () => {
             </FormItem>
           )}
         />
-        <Button type='submit'>Submit</Button>
+        <div className='flex flex-row gap-2 justify-end'>
+          <AlertDialogCancel className='bg-red-700 text-white'>
+            Cancelar
+          </AlertDialogCancel>
+          <Button type='submit' className=' bg-green-700'>
+            Cadastrar
+          </Button>
+        </div>
       </form>
     </Form>
   );
