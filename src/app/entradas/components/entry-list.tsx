@@ -11,12 +11,10 @@ import {
 } from '@/components/ui/table';
 import { TFetchEntrySchema } from '@/schemas';
 import { EntriesService } from '@/services';
-import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { trasnformDateFromUsaToBr } from '@/lib';
-import { Dialog } from '@/components/dialog';
-import { AlertDialogCancel } from '@/components/ui/alert-dialog';
+import { DeleteModal } from '@/components';
 
 type TEntryList = {
   data: TFetchEntrySchema[];
@@ -43,49 +41,31 @@ export default function EntryList({ data }: Readonly<TEntryList>) {
 
   return (
     <div>
-      <Table className='mt-4 shadow-md rounded-xl bg-slate-50'>
+      <Table className='mt-4 shadow-md rounded-xl bg-slate-50 dark:bg-slate-500 font-regular'>
         <TableCaption>Lista de Entradas</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className='w-[200px]'>Data</TableHead>
-            <TableHead>Maquininha</TableHead>
-            <TableHead>Dinheiro</TableHead>
-            <TableHead>Action</TableHead>
+            <TableHead className='w-[200px] dark:text-white'>Data</TableHead>
+            <TableHead className='dark:text-white'>Maquininha</TableHead>
+            <TableHead className='dark:text-white'>Dinheiro</TableHead>
+            <TableHead className='dark:text-white'>Eventos</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {data?.map((item, key) => {
             return (
               <TableRow key={key}>
-                <TableCell className='font-medium'>
-                  {trasnformDateFromUsaToBr(item.date)}
-                </TableCell>
+                <TableCell>{trasnformDateFromUsaToBr(item.date)}</TableCell>
                 <TableCell>{item.machine}</TableCell>
                 <TableCell>{item.money}</TableCell>
-
                 <TableCell>
-                  <Dialog
-                    trigger={
-                      <Dialog.ButtonTrigger
-                        label='Exluir'
-                        btnClass='bg-red-700'
-                      />
-                    }
-                  >
-                    <Dialog.HeaderDescription
-                      title='Excluindo Entrada'
-                      message={`Tem certeza que deseja excluir essa entrada do dia: ${trasnformDateFromUsaToBr(
-                        item.date
-                      )} ? `}
-                    />
-                    <Button
-                      onClick={() => handleDelete(item)}
-                      className='bg-red-700 mt-5'
-                    >
-                      Deletar
-                    </Button>
-                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                  </Dialog>
+                  <DeleteModal
+                    title='Delete'
+                    message={`Tem certeza que deseja excluir essa entrada do dia: ${trasnformDateFromUsaToBr(
+                      item.date
+                    )}`}
+                    onClickAction={() => handleDelete(item)}
+                  />
                 </TableCell>
               </TableRow>
             );
