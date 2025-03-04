@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dialog } from './dialog';
 
-export function CreateModal({
+export function EditModal({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -9,7 +9,7 @@ export function CreateModal({
   return (
     <Dialog>
       <Dialog.ButtonTrigger
-        label='Nova Entrada'
+        label='Editar Entrada'
         btnClass='bg-green-600'
         contentClass='float-right'
       />

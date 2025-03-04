@@ -16,8 +16,13 @@ const DeleteEntry = async (id: string, date: string) => {
   return response;
 };
 
+const UpdateEntry = async (data: any) => {
+  return await api.put('/api/entradas', data);
+};
+
 export const EntriesService = {
   AddEntry,
   ListEntries,
   DeleteEntry,
+  UpdateEntry,
 };

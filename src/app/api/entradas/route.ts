@@ -31,8 +31,9 @@ export async function DELETE(request: Request) {
 }
 
 export async function PUT(request: Request) {
-  const formData = await request.formData();
-  const response = await dynamoClient.update(formData);
+  const json = await request.json();
+
+  const response = await dynamoClient.update(json);
   return Response.json({
     message: 'Updated successfully',
     data: response,

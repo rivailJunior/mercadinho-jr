@@ -14,16 +14,15 @@ export function DeleteModal({
   onClickAction,
 }: Readonly<TDeleteModal>) {
   return (
-    <Dialog
-      trigger={
-        <Dialog.ButtonTrigger label='Exluir' btnClass='bg-red-700 text-white' />
-      }
-    >
-      <Dialog.HeaderDescription title={title} message={message} />
-      <Button onClick={onClickAction} className='bg-red-700 mt-5 text-white'>
-        Deletar
-      </Button>
-      <AlertDialogCancel>Cancelar</AlertDialogCancel>
+    <Dialog>
+      <Dialog.ButtonTrigger label='Exluir' btnClass='bg-red-700 text-white' />
+      <Dialog.Content>
+        <Dialog.HeaderDescription title={title} message={message} />
+        <Button onClick={onClickAction} className='bg-red-700 mt-5 text-white'>
+          Deletar
+        </Button>
+        <AlertDialogCancel>Cancelar</AlertDialogCancel>
+      </Dialog.Content>
     </Dialog>
   );
 }

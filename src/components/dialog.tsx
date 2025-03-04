@@ -14,17 +14,16 @@ import { Button } from './ui/button';
 
 type TDialog = {
   children?: React.ReactNode;
-  trigger?: React.ReactNode | React.JSX.Element;
 };
 
-function Dialog({ children, trigger }: Readonly<TDialog>) {
-  return (
-    <AlertDialog>
-      {trigger}
-      <AlertDialogContent>{children}</AlertDialogContent>
-    </AlertDialog>
-  );
+function Dialog({ children }: Readonly<TDialog>) {
+  return <AlertDialog>{children}</AlertDialog>;
 }
+
+const Content = ({ children }: { children: React.ReactNode }) => {
+  return <AlertDialogContent>{children}</AlertDialogContent>;
+};
+Dialog.Content = Content;
 
 const Cta = ({
   label,

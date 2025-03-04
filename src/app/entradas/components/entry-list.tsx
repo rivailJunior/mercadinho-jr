@@ -13,8 +13,14 @@ import { TFetchEntrySchema } from '@/schemas';
 import { EntriesService } from '@/services';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
-import { trasnformDateFromUsaToBr } from '@/lib';
-import { DeleteModal } from '@/components';
+import {
+  formatDate,
+  handleTransformToNumber,
+  transformDateFromBrToUsa,
+  trasnformDateFromUsaToBr,
+} from '@/lib';
+import { DeleteModal, EditModal } from '@/components';
+import { EntryFrom } from './entry-form';
 
 type TEntryList = {
   data: TFetchEntrySchema[];
@@ -66,6 +72,17 @@ export default function EntryList({ data }: Readonly<TEntryList>) {
                     )}`}
                     onClickAction={() => handleDelete(item)}
                   />
+
+                  <EditModal>
+                    <EntryFrom
+                      data={{
+                        ...item,
+                        machine: handleTransformToNumber(item.machine),
+                        money: handleTransformToNumber(item.money),
+                        date: formatDate(trasnformDateFromUsaToBr(item.date)),
+                      }}
+                    />
+                  </EditModal>
                 </TableCell>
               </TableRow>
             );

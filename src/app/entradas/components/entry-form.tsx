@@ -12,7 +12,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { cn, handleFormatForBRL } from '@/lib';
+import { cn, handleFormatForBRL, handleTransformToNumber } from '@/lib';
 import { z } from 'zod';
 import { Calendar } from '@/components/ui/calendar';
 import { format } from 'date-fns';
@@ -25,15 +25,33 @@ import {
 } from '@/components/ui/popover';
 import { CalendarIcon } from 'lucide-react';
 import { EntriesService } from '@/services';
-import { EntrySchema } from '@/schemas';
+import { EntrySchema, TEntrySchema } from '@/schemas';
 import { useRouter } from 'next/navigation';
 import { AlertDialogCancel } from '@/components/ui/alert-dialog';
+import { useEffect } from 'react';
 
-export const EntryFrom = () => {
+type TEntryForm = {
+  data?: Partial<TEntrySchema>;
+};
+
+export const EntryFrom = ({ data }: TEntryForm) => {
   const router = useRouter();
   const form = useForm<z.infer<typeof EntrySchema>>({
     resolver: zodResolver(EntrySchema),
   });
+
+  useEffect(() => {
+    if (data?.id && data?.machine && data?.money && data?.date) {
+      form.setValue(
+        'machine',
+        handleFormatForBRL(data.machine).format() as any
+      );
+      form.setValue('money', handleFormatForBRL(data.money).format() as any);
+      form.setValue('date', new Date(data.date) as any, {
+        shouldValidate: true,
+      });
+    }
+  }, []);
 
   const clearForm = () => {
     form.reset({
@@ -44,10 +62,16 @@ export const EntryFrom = () => {
   };
 
   async function onSubmit(values: z.infer<typeof EntrySchema>) {
-    const data = await EntriesService.AddEntry(values);
+    const caller = data
+      ? EntriesService.UpdateEntry({
+          ...values,
+          id: data.id,
+        })
+      : EntriesService.AddEntry(values);
 
-    if (data) {
-      toast.success('Entrada cadastrada com sucesso', {
+    const response = await caller;
+    if (response) {
+      toast.success(`Entrada ${data ? 'atualizada' : 'criada'} com sucesso`, {
         duration: 3000,
         position: 'top-right',
         richColors: true,
@@ -59,8 +83,7 @@ export const EntryFrom = () => {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const fieldName = event.target.name;
-    const rawValue = event.target.value.replace(/\D/g, ''); // Remove all non-numeric characters
-    const numericValue = rawValue ? Number(rawValue) / 100 : 0; // Convert to a decimal number
+    const numericValue = handleTransformToNumber(event.target.value);
     form.setValue(fieldName as any, handleFormatForBRL(numericValue).format(), {
       shouldValidate: true,
     });
@@ -157,7 +180,7 @@ export const EntryFrom = () => {
             Cancelar
           </AlertDialogCancel>
           <Button type='submit' className=' bg-green-700'>
-            Cadastrar
+            {data ? 'Atualizar' : 'Criar'}
           </Button>
         </div>
       </form>

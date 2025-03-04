@@ -4,7 +4,6 @@ import EntryList from './components/entry-list';
 import { EntriesService } from '@/services';
 import { TFetchEntrySchema } from '@/schemas';
 import { CreateModal } from '@/components';
-
 export default async function page() {
   return (
     <div className='container'>

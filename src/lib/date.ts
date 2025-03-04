@@ -14,3 +14,8 @@ export const trasnformDateFromUsaToBr = (data: string) => {
   });
   return date.parse(data);
 };
+
+
+export const formatDate = (date: string) => {
+  return new Date(date).toLocaleString('pt-BR', { timeZone: 'America/Manaus' });
+};

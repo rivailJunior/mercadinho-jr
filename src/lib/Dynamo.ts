@@ -82,14 +82,24 @@ export class DynamoClient {
     return await this.docClient.send(command);
   }
 
-  public async update(formData: FormData) {
+  public async update({
+    id,
+    date,
+    machine,
+    money,
+  }: {
+    id: string;
+    date: string;
+    machine: number;
+    money: number;
+  }) {
     const updateCommand = new UpdateCommand({
       TableName: this.tableName,
-      Key: { id: formData.get('id'), date: formData.get('date') },
+      Key: { id: id, date: date },
       UpdateExpression: 'set machine = :machine, money = :money',
       ExpressionAttributeValues: {
-        ':machine': Number(formData.get('machine')),
-        ':money': Number(formData.get('money')),
+        ':machine': Number(machine),
+        ':money': Number(money),
       },
       ReturnValues: 'ALL_NEW',
     });
